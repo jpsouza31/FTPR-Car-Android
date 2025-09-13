@@ -38,14 +38,6 @@ object FirebaseService {
         signInWithCredential(credential, onComplete)
     }
 
-//    fun signInWithGoogle(
-//        account: GoogleSignInAccount,
-//        onComplete: (Boolean, String?) -> Unit
-//    ) {
-//        val credential = com.google.firebase.auth.GoogleAuthProvider.getCredential(account.idToken, null)
-//        signInWithCredential(credential, onComplete)
-//    }
-
     fun signInWithCredential(
         credential: com.google.firebase.auth.AuthCredential,
         onComplete: (Boolean, String?) -> Unit
