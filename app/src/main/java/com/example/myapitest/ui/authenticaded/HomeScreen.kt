@@ -5,7 +5,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -14,7 +13,11 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -28,7 +31,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.myapitest.R
 import com.example.myapitest.ui.SCREEN_TRANSITION_MILLIS
-import com.example.myapitest.ui.authenticaded.cars.CarsScreen
+import com.example.myapitest.ui.authenticaded.cars.Cars
+import com.example.myapitest.ui.authenticaded.cars.carsLIst.CarsScreen
 import com.example.myapitest.ui.authenticaded.profile.ProfileScreen
 import com.example.myapitest.ui.theme.Blue200
 import com.example.myapitest.ui.theme.Grey500
@@ -55,6 +59,7 @@ fun HomeScreen(
     onLogout: () -> Unit = {}
 ) {
     val navController = rememberNavController()
+    var showBottomBar by remember { mutableStateOf(true) }
 
     val items = listOf(
         BottomTab.Cars,
@@ -66,6 +71,7 @@ fun HomeScreen(
 
     Scaffold(
         bottomBar = {
+            if (showBottomBar) {
                 Box(
                     modifier = Modifier.background(color = LightGray)
                 ) {
@@ -110,14 +116,14 @@ fun HomeScreen(
                         }
                     }
                 }
-
+            }
         }
     ) { innerPadding ->
         NavHost(
             navController = navController,
             startDestination = BottomTab.Cars.route,
             modifier = Modifier.padding(
-                bottom = innerPadding.calculateBottomPadding()
+                bottom = if (showBottomBar) innerPadding.calculateBottomPadding() else 0.dp
             )
         ) {
             composable(
@@ -155,7 +161,14 @@ fun HomeScreen(
                     }
                 }
             ) {
-                CarsScreen()
+                LaunchedEffect(Unit) {
+                    showBottomBar = true
+                }
+                Cars(
+                    onBottomBarVisibilityChanged = { visible ->
+                        showBottomBar = visible
+                    }
+                )
             }
             composable(
                 route = BottomTab.Profile.route,
@@ -192,6 +205,9 @@ fun HomeScreen(
                     }
                 }
             ) {
+                LaunchedEffect(Unit) {
+                    showBottomBar = true
+                }
                 ProfileScreen(
                     onLogout = onLogout
                 )
