@@ -10,5 +10,6 @@
 - [x] Storage das images no Firebase
 - [x] Google maps API
 
-[![Watch the video](car_image.png)](https://drive.google.com/file/d/14DtZYJCi_7wRiINio0JgU6VLHik4hBu5/view?usp=drive_link)
+https://github.com/user-attachments/assets/ae8a3e4f-5dc1-49ce-8843-b6b381461e97
+
 
